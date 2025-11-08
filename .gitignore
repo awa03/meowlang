@@ -2,6 +2,7 @@
 *.o
 *.obj
 compile_commands.json
+*.cache
 
 # Compiled binary and build directory
 /bin/
