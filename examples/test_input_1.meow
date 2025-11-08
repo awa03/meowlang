@@ -1,0 +1,15 @@
+fun add(a, b) {
+    return a + b
+}
+
+if true {
+    meow "Hello, world!"
+}
+
+x = 42
+y = 3.14
+
+while x < 50 {
+    x = x + 1
+}
+

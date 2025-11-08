@@ -1,0 +1,41 @@
+# Compiled object files
+*.o
+*.obj
+compile_commands.json
+
+# Compiled binary and build directory
+/bin/
+/build/
+/out/
+
+# Executable files
+*.exe
+*.out
+*.elf
+
+# Libraries
+*.a
+*.so
+*.dll
+*.dylib
+
+# Debug and log files
+*.log
+*.stackdump
+*.core
+
+# Editor and system files
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# VS Code / CLion / other IDEs
+.vscode/
+.idea/
+*.iml
+
+# Makefile backups
+Makefile~
+
