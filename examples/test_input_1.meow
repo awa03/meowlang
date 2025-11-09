@@ -1,15 +1,30 @@
 fun add(a, b) {
-    return a + b
+    result a + b;
 }
 
-if true {
-    meow "Hello, world!"
+check true {
+    meow "Hello, world!";
 }
 
-x = 42
-y = 3.14
+fur x = 42;
+fur y = 3.14;
 
-while x < 50 {
-    x = x + 1
+$ this is a comment $ 
+fur x = 42;
+
+$ terminate comments with $ 
+$ they also terminate with newline
+$ hypotenuse $ fun pythagorean(a $ side1 $, b $ side2 $){
+  $ some code $
+}
+
+fur one is nah true;
+fun two = !true;
+fun two = not true;
+
+fur j = 20;
+
+loop x > 50 {
+    x = x + 1;
 }
 

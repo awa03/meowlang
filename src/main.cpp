@@ -1,5 +1,8 @@
 #include <iostream>  
 #include <lexer/tokenizer.hpp>
+#include <parser/parser.hpp>
+#include <utils/dump.hpp>
+
 using namespace std;
 
 int main(int argc, char** argv){
@@ -7,5 +10,8 @@ int main(int argc, char** argv){
     std::cout << "Meow, No Input File...\n";
   } 
    
-  lexer::tokenize_file(argv[1]); 
+  auto tokens = lexer::tokenize_file(argv[1]); 
+  parser::parse parsed(tokens);
+  auto program = parsed.make_ast();
+  utils::dump_program(program);
 }
