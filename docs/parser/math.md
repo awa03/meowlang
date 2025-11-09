@@ -1,4 +1,4 @@
-# Mathmatical Parsing
+# Mathematical Parsing
 
 For prerequisite knowledge of the lexer keywords please refer to [lexer documentation](../lexer/keywords.md)
 
