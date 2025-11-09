@@ -92,6 +92,20 @@ private:
     return left;
   }
 
+  lexer::token expect(lexer::token_type type, std::string err){
+    const auto prev = curr_tok();
+
+    if(prev.type != type){
+      std::cerr << "PARSER: " << err;
+      std::cerr << "\tExpecting: " << lexer::token_type_to_string(type) << "\n";
+      std::cerr << "\tRecieved: " << lexer::token_type_to_string(prev.type) << "\n";
+      exit(1);
+    }
+
+    tokens.erase(tokens.begin());
+    return prev;
+  }
+
   std::unique_ptr<expression> parse_prim_exp(){
     const auto tok = curr_tok();
     switch(tok.type){
@@ -101,10 +115,18 @@ private:
         return std::make_unique<numeric_literal>(advance());
       case lexer::PLUS:
         return std::make_unique<numeric_literal>(advance());
+      case lexer::LPAREN: {
+        advance();
+        auto val = parse_exp();
+        expect(lexer::RPAREN, "Unexpected token found within parenthesised expression.");
+        return val;
+      }
+      case lexer::RPAREN: {
+        std::cerr << "\nPARSER: Unexpected closing parenthesis ')' on line " << tok.line << "\n";
+        exit(1);
+      }
       default: 
-        std::cerr << "\nUNEXPECTED TOKEN FOUND DURING PARSING...\n";
-        std::cerr << lexer::token_type_to_string(tok.type) << "[line:";
-        std::cerr << tok.line << "]\n";
+        std::cerr << "\nPARSER: Unexpected token '" << tok.value << "' on line " << tok.line << "\n";
         exit(1);
     } 
   }

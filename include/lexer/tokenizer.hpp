@@ -122,10 +122,10 @@ namespace lexer {
     // check if valid keyword
     auto tok_type = keywords.find(extracted_keyword);
     if(tok_type != keywords.end()){
-      tok_obj.add_tok({tok_type->second, "", tok_obj.line});
+      tok_obj.add_tok({tok_type->second, extracted_keyword, tok_obj.line});
     }
     // if not found in map then call IDENTIFIER
-    else tok_obj.add_tok({IDENTIFIER, "", tok_obj.line});
+    else tok_obj.add_tok({IDENTIFIER, extracted_keyword, tok_obj.line});
   }
 
   inline void scan_number(tokenizer& tok_obj){
