@@ -19,6 +19,7 @@ Meow Lang is a cute, expressive programming language that brings the joy of cats
 - `check` / `otherwise` - Conditional logic
 - `loop` - Loop control
 - `fun` - Function declarations
+- `new` - Variable declarations
 - `meow` - Print 
 - `result` - Return values from functions
 - `true` - Boolean true value
@@ -68,11 +69,11 @@ check true {
     meow "Hello, world!";
 }
 
-fur x = 42;
-fur y = 3.14;
+new x = 42;
+new y = 3.14;
 
 $ this is a comment $ 
-fur x = 42;
+new x = 42;
 
 $ terminate comments with $ 
 $ they also terminate with newline
@@ -80,13 +81,13 @@ $ hypotenuse $ fun pythagorean(a $ side1 $, b $ side2 $){
   $ some code $
 }
 
-fur one is nah true;
-fun two = !true;
-fun two = not true;
+new one is nah true;
+new two = !true;
+new two = not true;
 
-fur j = 20;
+new x = 20;
 
-loop x > 50 {
+loop x < 50 {
     x = x + 1;
 }
 
