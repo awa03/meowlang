@@ -71,5 +71,20 @@ std::unique_ptr<expression> parse_mult_exp(){
 }
 ```
 
+## Example Output
 
-
+```json
+Program {
+  BinaryExpression: + {
+    left:
+      Identifier: 5
+    right:
+      BinaryExpression: * {
+        left:
+          Identifier: 10
+        right:
+          Identifier: 2
+      }
+  }
+}
+```
