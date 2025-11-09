@@ -16,25 +16,29 @@ Meow Lang is a cute, expressive programming language that brings the joy of cats
 
 ### Keywords
 
-- `if` / `elif` / `else` - Conditional logic
-- `until` - Loop control
+- `check` / `otherwise` - Conditional logic
+- `loop` - Loop control
 - `fun` - Function declarations
-- `meow` - Special cat-themed keyword
-- `return` - Return values from functions
+- `meow` - Print 
+- `result` - Return values from functions
 - `true` - Boolean true value
+- `nap` - Break control
+- `persue` - Continue loop
+- `fetch` - Import modules
 - `and` / `or` / `not` - Logical operators
 
 ### Operators
 
 - **Arithmetic**: `+`, `-`, `*`, `/`, `%`, `^`
 - **Comparison**: `==`, `!=`, `<`, `>`, `<=`, `>=`
-- **Logical**: `and`, `or`, `not`
+- **Logical**: `and`, `or`, `nah`
 
 ### Data Types
 
 - Numbers (integers and floats)
 - Strings (enclosed in double quotes)
 - Booleans (`true`)
+- Null (`nil`)
 
 ## 🚀 Getting Started
 
@@ -56,29 +60,40 @@ g++ -g -O2 main.cpp -o meow_lang
 ## 📝 Example Code
 
 ```
-# A simple Meow Lang program
-meow
-
-fun greet(name) {
-    return "Hello, " + name + "!"
+fun add(a, b) {
+    result a + b;
 }
 
-until condition {
-    meow
+check true {
+    meow "Hello, world!";
 }
+
+fur x = 42;
+fur y = 3.14;
+
+$ this is a comment $ 
+fur x = 42;
+
+$ terminate comments with $ 
+$ they also terminate with newline
+$ hypotenuse $ fun pythagorean(a $ side1 $, b $ side2 $){
+  $ some code $
+}
+
+fur one is nah true;
+fun two = !true;
+fun two = not true;
+
+fur j = 20;
+
+loop x > 50 {
+    x = x + 1;
+}
+
 ```
 
 ## 🏗️ Project Structure
 
-```
-.
-├── lexer/
-│   ├── token.hpp          # Token definitions
-│   └── tokenizer.hpp      # Lexical analyzer
-├── utils/
-│   └── string_ops.hpp     # String utility functions
-└── main.cpp               # Entry point
-```
 
 ## 🐾 Debugging
 
