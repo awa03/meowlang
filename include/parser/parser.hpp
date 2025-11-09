@@ -56,7 +56,6 @@ private:
          curr_tok().type == lexer::MULT 
       || curr_tok().type == lexer::DIV 
       || curr_tok().type == lexer::MOD
-      || curr_tok().type == lexer::POW
     ){
       auto oper = advance();
       auto right = parse_prim_exp();

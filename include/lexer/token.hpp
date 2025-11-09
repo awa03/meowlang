@@ -78,7 +78,7 @@ enum token_type{
 
 static const std::unordered_map<std::string, token_type> keywords = {
   // Keywords
-  {"fur", VAR},
+  {"new", VAR},
   {"is", ASSIGN},
   {"nil", NIL},
   {"check", IF},
@@ -95,6 +95,7 @@ static const std::unordered_map<std::string, token_type> keywords = {
   {"nap", BREAK},
   {"pursue", CONTINUE},
   {"fetch", IMPORT},
+
   {"stay", CONST}
 };
 

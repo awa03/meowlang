@@ -6,11 +6,11 @@ check true {
     meow "Hello, world!";
 }
 
-fur x = 42;
-fur y = 3.14;
+new x = 42;
+new y = 3.14;
 
 $ this is a comment $ 
-fur x = 42;
+new x = 42;
 
 $ terminate comments with $ 
 $ they also terminate with newline
@@ -18,13 +18,17 @@ $ hypotenuse $ fun pythagorean(a $ side1 $, b $ side2 $){
   $ some code $
 }
 
-fur one is nah true;
-fun two = !true;
-fun two = not true;
+new pettable is true;
+new cat is nah pettable;
 
-fur j = 20;
+stay new cat is nah pettable;
 
-loop x > 50 {
+new two = !true;
+new two = not true;
+
+new x = 20;
+
+loop x < 50 {
     x = x + 1;
 }
 
