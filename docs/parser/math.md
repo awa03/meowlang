@@ -1,14 +1,14 @@
 # Mathematical Parsing
 
-For prerequisite knowledge of the lexer keywords please refer to [lexer documentation](../lexer/keywords.md)
+For prerequisite knowledge of the lexer keywords, please refer to [lexer documentation](../lexer/keywords.md)
 
 ## Multiple Expressions
 
-Consider the example `5 + 10 * 2`. In order to parse and resolve the equation we must seperate the relevant operations.
-We must also consider order of precedance within operations (*pemdas*). Since multiplication (`*`) has a higher precedance than addition (`+`),
+Consider the example `5 + 10 * 2`. To parse and resolve the equation, we must separate the relevant operations.
+We must also consider the order of precedence within operations (*PEMDAS*). Since multiplication (`*`) has a higher precedence than addition (`+`),
 we must solve for `10 * 2` before adding 5. 
 
-In order to accomplish this we will parse operations in *reverse order*. 
+To accomplish this, we will parse operations in *reverse order*. 
 
 ```cpp
 std::unique_ptr<expression> parse_exp(){
@@ -45,18 +45,18 @@ std::unique_ptr<expression> parse_additive_exp(){
 ## Multiplicative Parsing
 
 Building Multiplicative expression nodes is very similar to additive, and if we wanted to add 
-more expression types with higher precedance (such as `^` or `√`) we could simply add another 
+more expression types with higher precedence (such as `^` or `√`) we could simply add another 
 expression check down the chain of calls (*TODO*).
 
 ```cpp
 std::unique_ptr<expression> parse_mult_exp(){
     auto left = parse_prim_exp();  // attempt to classify
 
-    // all have equal precedance
+    // all have equal precedence
     while (
          curr_tok().type == lexer::MULT 
       || curr_tok().type == lexer::DIV 
-      || curr_tok().type == lexer::MOD // same precedance as mult / div
+      || curr_tok().type == lexer::MOD // same precedence as mult / div
     ){
       auto oper = advance();
       auto right = parse_prim_exp();
