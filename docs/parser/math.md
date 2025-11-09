@@ -73,7 +73,7 @@ std::unique_ptr<expression> parse_mult_exp(){
 
 ## Example Output
 
-```json
+```txt
 Program {
   BinaryExpression: + {
     left:
