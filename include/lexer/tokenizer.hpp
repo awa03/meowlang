@@ -97,22 +97,33 @@ namespace lexer {
   }
 
   inline void scan_comment(tokenizer& tok_obj){
-    std::cout << "\n\nRUNNING COMMENT SCAN" << "\n\n";
-    while(tok_obj.peak() != '\n' && tok_obj.peak() != '$'){
-      std::cout << "peaking at: "<< tok_obj.peak() << "\n";
+
+    while(tok_obj.peak() != '\n' &&  tok_obj.peak() != '$'){
+      if(tok_obj.is_end()){
+        return; 
+      }
       advance(tok_obj); 
     } 
 
     // needed if using inline commenting
-    if(tok_obj.peak() == '\n'){
+    if(tok_obj.peak_next() == '\n'){
       return;
     }
 
-    
+    if(tok_obj.peak_next() != '\0'){
+      return;
+    }
+
     advance(tok_obj); 
   }
+
+  inline bool is_iden_allowed_char(char c){
+    return (std::isalnum(c) || c == '_');
+  }
+
+
   inline void scan_identifier(tokenizer& tok_obj){
-    while(isalnum(tok_obj.peak())) {
+    while(is_iden_allowed_char(tok_obj.peak())) {
       advance(tok_obj);
     }
 
@@ -128,6 +139,7 @@ namespace lexer {
     if(tok_type != keywords.end()){
       tok_obj.add_tok({tok_type->second, extracted_keyword, tok_obj.line});
     }
+
     // if not found in map then call IDENTIFIER
     else tok_obj.add_tok({IDENTIFIER, extracted_keyword, tok_obj.line});
   }

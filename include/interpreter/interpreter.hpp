@@ -108,9 +108,13 @@ inline runtime_val* eval(parser::statement* ast_node, symtable::environment* env
     case parser::PROGRAM:
       return eval_program(static_cast<parser::program*>(ast_node), env);
 
-
     case parser::IDENTIFIER:
       return eval_identifier(static_cast<parser::identifier*>(ast_node), env);
+
+    case parser::VAR_DEC:{
+      auto rt_node = static_cast<parser::var_dec*>(ast_node);
+      return env->declare_variable(rt_node->identifier, new nil_val()); 
+    }
 
     default:
       std::cerr << "This AST Node is not setup for interpretation...\n";

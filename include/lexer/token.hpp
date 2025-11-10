@@ -60,7 +60,6 @@ enum token_type{
 
   WHILE,      // while loop -- may do no for loop 
   FUN,        // function 
-  TRUE,       // true value
   MEOW,       // print 
   RETURN,     // return value
   END_OF_FILE,// EOF
@@ -68,7 +67,7 @@ enum token_type{
   DEL, 
   BREAK, 
   CONTINUE,
-  CONST,
+  MUT,
   IMPORT,
 
   COMMENT,
@@ -81,24 +80,21 @@ static const std::unordered_map<std::string, token_type> keywords = {
   // Keywords
   {"new", VAR},
   {"del", DEL},
-  {"is", ASSIGN},
-  {"nil", NIL},
-  {"check", IF},
-  {"or", OR},
-  {"and", AND},
-  {"nah", NOT},
-  {"not", NOT},
-  {"otherwise", ELSE},
-  {"loop", WHILE},
-  {"fun", FUN},
-  {"true", TRUE},
-  {"meow", MEOW},
-  {"result", RETURN},
-  {"nap", BREAK},
-  {"pursue", CONTINUE},
-  {"fetch", IMPORT},
-
-  {"stay", CONST}
+  {"mut", MUT}
+  // {"is", ASSIGN},
+  // {"check", IF},
+  // {"or", OR},
+  // {"and", AND},
+  // {"nah", NOT},
+  // {"not", NOT},
+  // {"otherwise", ELSE},
+  // {"loop", WHILE},
+  // {"fun", FUN},
+  // {"meow", MEOW},
+  // {"result", RETURN},
+  // {"nap", BREAK},
+  // {"pursue", CONTINUE},
+  // {"fetch", IMPORT},
 };
 
 
@@ -142,7 +138,6 @@ inline std::string token_type_to_string(token_type type) {
     case ELSE:       return "ELSE";
     case WHILE:      return "WHILE";
     case FUN:        return "FUN";
-    case TRUE:       return "TRUE";
     case MEOW:       return "MEOW";
     case RETURN:     return "RETURN";
     case END_OF_FILE:return "END_OF_FILE";

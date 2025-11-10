@@ -8,7 +8,11 @@
 namespace parser {
 
 enum node_type {
+  // statements
   PROGRAM,          // Root Node
+  VAR_DEC,          // x = ...
+  
+  // Expressions 
   NUMERIC_LITERAL,  // Numeric (5, 21.21)
   NULL_LITERAL,     // Nil 
   IDENTIFIER,       // variable
@@ -18,7 +22,6 @@ enum node_type {
   UNARY_EXP,
   CALL_EXP,
   FUN_DEC,
-  VAR_DEC,
 };
 
 // could refactor to make abstract... not worth?
@@ -28,16 +31,40 @@ struct statement {
   virtual ~statement() = default;
 };
 
+
 struct program :public statement {
   std::vector<std::unique_ptr<statement>> body;
+
   program() : statement(node_type::PROGRAM) {}
   void add(std::unique_ptr<statement> stmt){
     body.push_back(std::move(stmt)); 
   }
 };
 
+
 struct expression :public statement { 
   expression(node_type k) : statement(k) {}
+};
+
+struct var_dec :public statement {
+  bool mut;
+  std::string identifier;
+  expression* type;
+
+
+  var_dec(): statement(node_type::VAR_DEC){} // NODE Type
+
+  // idk how to make this formatted in a less ugly way sorry lmao
+  var_dec
+  (
+    bool _mut,
+    std::string id,
+    expression* typ
+  ):
+    statement(node_type::VAR_DEC), // NODE Type
+    mut(_mut),                     // mutable 
+    identifier(id),                // Identifier name
+    type(typ){}                    // expr type
 };
 
 struct binary_exp :public expression {
@@ -66,7 +93,6 @@ struct numeric_literal :public expression {
   numeric_literal(std::string sym):
     expression(node_type::NUMERIC_LITERAL), symbol(sym) {};
 };
-
 
 struct nil_literal :public expression {
   std::string symbol; // x, foo, etc

@@ -34,6 +34,12 @@ public:
     return prev_val;
   }
 
+  lexer::token_type advance_type(){
+    const auto prev_val = curr_tok().type;
+    tokens.erase(tokens.begin());
+    return prev_val;
+  }
+
 private:
   lexer::token_list tokens;
 
@@ -41,8 +47,52 @@ private:
     return tokens[0].type == lexer::END_OF_FILE;
   }
 
+  std::unique_ptr<statement> parse_var_dec(){
+    bool is_mut = advance_type() == lexer::token_type::MUT; // check mut first
+
+    // ensure that assigning if mut
+    if(is_mut && curr_tok().type == lexer::token_type::VAR){
+      advance(); // east new 
+    }
+
+        
+    // continue ctrl flw
+    const auto iden = expect(lexer::token_type::IDENTIFIER, "Expected Identifier Following `new`");
+    if(curr_tok().type == lexer::LEND){
+      advance(); // eat semicolon
+      
+      if(!is_mut){
+        std::cerr << "Must assign value to constant expression ["; 
+        std::cerr << curr_tok().line << "]\n"; 
+        exit(1);
+      }
+
+      return std::make_unique<var_dec>(is_mut, iden.value, nullptr);
+    } 
+
+    expect(lexer::token_type::ASSIGN, "Expected assignment following identifier in variable decleration");
+    auto decl = std::make_unique<var_dec>(
+      is_mut,
+      iden.value,
+      parse_exp().get()
+    );
+    
+
+    expect(lexer::token_type::LEND, "Expected `;` following variable decleration");
+    return decl;
+  }
+
   std::unique_ptr<statement> parse_stmt(){
-    return parse_exp(); 
+    switch(curr_tok().type) {
+    case lexer::VAR:
+      return parse_var_dec();
+      
+    case lexer::MUT:
+      return parse_var_dec();
+
+    default:
+      return parse_exp(); 
+    }
   }
 
   std::unique_ptr<expression> parse_exp(){
@@ -97,7 +147,7 @@ private:
     const auto prev = curr_tok();
 
     if(prev.type != type){
-      std::cerr << "PARSER: " << err;
+      std::cerr << "PARSER: " << err << "\n";
       std::cerr << "\tExpecting: " << lexer::token_type_to_string(type) << "\n";
       std::cerr << "\tRecieved: " << lexer::token_type_to_string(prev.type) << "\n";
       exit(1);
@@ -141,8 +191,9 @@ private:
         advance(); // advance past null
         return std::make_unique<nil_literal>("nil"); // add 
       }
+
       default: 
-        std::cerr << "\nPARSER: Unexpected token '" << tok.value << "' on line " << tok.line << "\n";
+        std::cerr << "\nPARSER: Unexpected token [" << tok.value << "] on line " << tok.line << "\n";
         exit(1);
     } 
   }

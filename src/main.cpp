@@ -11,7 +11,6 @@
 
 using namespace std;
 
-// Helper function to print runtime values
 void print_value(interpreter::runtime_val* val) {
   switch(val->type) {
     case interpreter::NUMBER: {
@@ -33,15 +32,12 @@ void print_value(interpreter::runtime_val* val) {
   }
 }
 
-// Execute and print result
 void execute_and_print(parser::program& program, symtable::environment* env) {
   auto ret = interpreter::eval_program(&program, env);
   print_value(ret);
   std::cout << std::endl;
-  delete ret; 
 }
 
-// REPL mode
 void repl(symtable::environment* env) {
   std::cout << "Meow REPL - Enter expressions (Ctrl+C to exit)\n";
   
@@ -58,15 +54,13 @@ void repl(symtable::environment* env) {
     }
     
     try {
-      // tokenize
       auto tokens = lexer::new_tokenizer_runtime(input); 
       lexer::scan_tokens(tokens);
-      
-      // parse
+      // tokens.dump_tokens(); 
       parser::parse parsed(tokens.tokens);
       auto program = parsed.make_ast();
+      // utils::dump_program(program);
       
-      // execute and print
       execute_and_print(program, env);
       
     } catch(const std::exception& e) {
@@ -75,7 +69,6 @@ void repl(symtable::environment* env) {
   }
 }
 
-// exec file
 void execute_file(const char* filepath, symtable::environment* env) {
   try {
     auto tokens = lexer::tokenize_file(filepath);
@@ -93,19 +86,17 @@ void execute_file(const char* filepath, symtable::environment* env) {
   }
 }
 
-// initialize global environment
 symtable::environment* create_global_env() {
   auto env = new symtable::environment(nullptr);
   
-  // declare global constants
   env->declare_variable("true", new interpreter::bool_val(true));
   env->declare_variable("false", new interpreter::bool_val(false));
+  env->declare_variable("nil", new interpreter::nil_val());
   
   return env;
 }
 
 int main(int argc, char** argv) {
-  // Create global environment
   auto env = create_global_env();
   
   if(argc == 1) {
@@ -117,7 +108,7 @@ int main(int argc, char** argv) {
     execute_file(argv[1], env);
   }
   else {
-    // Too many arguments
+    // too many arguments
     std::cerr << "Usage: " << argv[0] << " [filename]\n";
     std::cerr << "  No arguments: Start REPL\n";
     std::cerr << "  With filename: Execute file\n";
@@ -125,7 +116,6 @@ int main(int argc, char** argv) {
     return 1;
   }
   
-  // Cleanup
   delete env;
   return 0;
 }
