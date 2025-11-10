@@ -8,6 +8,8 @@ namespace interpreter {
 enum value_type {
   NIL, 
   NUMBER,
+  BOOL,
+  STR,
 };
 
 struct runtime_val {
@@ -21,10 +23,19 @@ struct nil_val: public runtime_val {
   nil_val(): runtime_val(NIL), value("nil") {}
 };
 
-
 struct number_val: public runtime_val {
   double value;
   number_val(double v= 0.0): runtime_val(NUMBER), value(v) {}
+};
+
+struct bool_val: public runtime_val {
+  bool value;
+  bool_val(bool v = true): runtime_val(BOOL), value(v) {}
+};
+
+struct str_val: public runtime_val {
+  std::string value;
+  str_val(std::string v = ""): runtime_val(STR), value(v) {}
 };
 
 }

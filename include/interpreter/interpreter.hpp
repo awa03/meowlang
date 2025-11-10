@@ -99,11 +99,15 @@ inline runtime_val* eval(parser::statement* ast_node, symtable::environment* env
     case parser::NULL_LITERAL:
       return new nil_val();
 
+    // case parser::STRING:
+    //   return nullptr;
+
     case parser::BINARY_EXP:
       return eval_binary_exp(static_cast<parser::binary_exp*>(ast_node), env);
 
     case parser::PROGRAM:
       return eval_program(static_cast<parser::program*>(ast_node), env);
+
 
     case parser::IDENTIFIER:
       return eval_identifier(static_cast<parser::identifier*>(ast_node), env);

@@ -21,29 +21,14 @@ public:
   }
 
   interpreter::runtime_val* declare_variable(std::string name, interpreter::runtime_val* val){
-    const auto found_pos = variables.find(name);  
-
-    // variable already declared
-    if(found_pos != variables.end()){
-      std::cerr << "Cannot redeclare variable [" << name << "]\n"; 
-    }
-
+    // redeclaring in scope just change value
     variables[name] = val;
     return val;
   } 
 
   // assign variable -- error warning on redeclare 
   interpreter::runtime_val* assign_variable(std::string name, interpreter::runtime_val* val){
-    auto env = resolve(name);
-    const auto found_pos = variables.find(name);  
-
-    // variable already declared
-    // scope switching
-    if(found_pos != variables.end()){
-      env->variables.erase(name);
-      env = this;
-    }
-
+    const auto env = resolve(name);
     env->variables[name] = val;
     return val;
   } 
@@ -73,8 +58,6 @@ public:
     }
   }
 
-
-  
 private:
   environment* parent;
   var_table variables; 

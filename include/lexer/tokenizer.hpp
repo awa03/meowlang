@@ -18,6 +18,11 @@ namespace lexer {
   void scan_identifier(tokenizer& tok_obj);
   void scan_comment(tokenizer& tok_obj);
 
+  inline tokenizer new_tokenizer_runtime(std::string dump){
+    tokenizer _create_tokenizer(dump, dump.length());
+    return _create_tokenizer;
+  } 
+
   inline tokenizer new_tokenizer(std::string file_name){
     // check file
     std::ifstream file(file_name); 
