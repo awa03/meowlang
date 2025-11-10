@@ -55,7 +55,6 @@ namespace lexer {
   inline void scan_token(tokenizer& tok_obj){
     char c = advance(tok_obj);
     int& line_num = tok_obj.line;
-    std::cout << c;
     switch(c){
     case '(': tok_obj.add_tok({LPAREN, "(", line_num}); break;
     case ')': tok_obj.add_tok({RPAREN, ")", line_num}); break;

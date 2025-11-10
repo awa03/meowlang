@@ -46,7 +46,7 @@ inline void dump_ast(const statement* node, int indent = 0) {
             std::cout << spacing << "}\n";
             break;
         }
-        
+
         default:
             std::cout << spacing << "Unknown Node Type: " << node->kind << "\n";
             break;

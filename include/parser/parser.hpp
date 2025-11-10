@@ -4,6 +4,7 @@
 #include <memory>
 #include "lexer/token.hpp"
 #include "parser/node_types.hpp"
+#include "utils/dump.hpp"
 
 namespace parser {
 class parse {
@@ -106,24 +107,39 @@ private:
     return prev;
   }
 
+  // identify type
   std::unique_ptr<expression> parse_prim_exp(){
     const auto tok = curr_tok();
     switch(tok.type){
+
       case lexer::IDENTIFIER:
         return std::make_unique<identifier>(advance());
+
       case lexer::NUMBER:
         return std::make_unique<numeric_literal>(advance());
-      case lexer::PLUS:
-        return std::make_unique<numeric_literal>(advance());
+
       case lexer::LPAREN: {
         advance();
         auto val = parse_exp();
-        expect(lexer::RPAREN, "Unexpected token found within parenthesised expression.");
+
+        expect(
+          lexer::RPAREN,
+          "Unexpected token found within parenthesised expression."
+        );
+
         return val;
       }
+
+      // unexpected -- should never reach
       case lexer::RPAREN: {
         std::cerr << "\nPARSER: Unexpected closing parenthesis ')' on line " << tok.line << "\n";
         exit(1);
+      }
+
+      // null value
+      case lexer::NIL: {
+        advance(); // advance past null
+        return std::make_unique<nil_literal>("nil"); // add 
       }
       default: 
         std::cerr << "\nPARSER: Unexpected token '" << tok.value << "' on line " << tok.line << "\n";

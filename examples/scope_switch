@@ -1,0 +1,12 @@
+
+fun main(){
+  new new_scope;
+  new same_scope;
+
+  loop x < 10 {
+    new new_scope = 10; $ switch scope
+    same_scope = 10
+  }
+
+  $ no longer access var outside loop
+}

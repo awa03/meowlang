@@ -1,17 +1,20 @@
 #ifndef NODE_TYPE_HPP
 #define NODE_TYPE_HPP
 
-#include <iostream>
+#include <string>
 #include <vector>
 #include <memory>
 
 namespace parser {
 
 enum node_type {
-  PROGRAM, 
-  NUMERIC_LITERAL,
-  IDENTIFIER,
-  BINARY_EXP,
+  PROGRAM,          // Root Node
+  NUMERIC_LITERAL,  // Numeric (5, 21.21)
+  NULL_LITERAL,     // Nil 
+  IDENTIFIER,       // variable
+  BINARY_EXP,       // 5 + 5
+
+  // TODO
   UNARY_EXP,
   CALL_EXP,
   FUN_DEC,
@@ -61,9 +64,16 @@ struct numeric_literal :public expression {
   std::string symbol; // x, foo, etc
   numeric_literal(): expression(node_type::NUMERIC_LITERAL) {};
   numeric_literal(std::string sym):
-    expression(node_type::IDENTIFIER), symbol(sym) {};
+    expression(node_type::NUMERIC_LITERAL), symbol(sym) {};
 };
 
+
+struct nil_literal :public expression {
+  std::string symbol; // x, foo, etc
+  nil_literal(): expression(node_type::NULL_LITERAL) {};
+  nil_literal(std::string sym):
+    expression(node_type::NULL_LITERAL), symbol(sym) {};
+};
 
 }
 

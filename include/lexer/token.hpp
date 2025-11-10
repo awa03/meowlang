@@ -65,6 +65,7 @@ enum token_type{
   RETURN,     // return value
   END_OF_FILE,// EOF
   VAR,
+  DEL, 
   BREAK, 
   CONTINUE,
   CONST,
@@ -79,6 +80,7 @@ enum token_type{
 static const std::unordered_map<std::string, token_type> keywords = {
   // Keywords
   {"new", VAR},
+  {"del", DEL},
   {"is", ASSIGN},
   {"nil", NIL},
   {"check", IF},
@@ -144,7 +146,8 @@ inline std::string token_type_to_string(token_type type) {
     case MEOW:       return "MEOW";
     case RETURN:     return "RETURN";
     case END_OF_FILE:return "END_OF_FILE";
-    case VAR :return "VARIABLE_DEC";
+    case VAR        :return "VARIABLE_DEC";
+    case DEL        :return "VARIABLE_DEL";
 
     default:         return "NOT IMP";
   }
