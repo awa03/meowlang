@@ -27,9 +27,12 @@ new variable = 5;
 
 if(variable == 5){
     new variable;
-}
+} $ if scope terminates
 
 $ variable no longer exists
+new variable = 10; $ redeclaring
+del variable;      $ variable no longer exists
 ```
+
 
 
