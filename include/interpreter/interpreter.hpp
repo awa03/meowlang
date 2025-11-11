@@ -77,6 +77,13 @@ inline runtime_val* eval_identifier(parser::identifier* ident, symtable::environ
   auto val = env->lookup_variable(ident->symbol);
   return val;
 }
+inline runtime_val* eval_var_decl(parser::var_dec* new_var, symtable::environment* env){
+  runtime_val* value = new_var->type 
+    ? eval(new_var->type.get(), env) 
+    : new nil_val();
+
+  return env->declare_variable(new_var->identifier, value);
+}
 
 // evaluate abstract syntax tree
 inline runtime_val* eval(parser::statement* ast_node, symtable::environment* env){
@@ -112,8 +119,7 @@ inline runtime_val* eval(parser::statement* ast_node, symtable::environment* env
       return eval_identifier(static_cast<parser::identifier*>(ast_node), env);
 
     case parser::VAR_DEC:{
-      auto rt_node = static_cast<parser::var_dec*>(ast_node);
-      return env->declare_variable(rt_node->identifier, new nil_val()); 
+      return eval_var_decl(static_cast<parser::var_dec*>(ast_node), env); 
     }
 
     default:

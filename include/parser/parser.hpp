@@ -74,7 +74,7 @@ private:
     auto decl = std::make_unique<var_dec>(
       is_mut,
       iden.value,
-      parse_exp().get()
+      parse_exp()
     );
     
 
@@ -190,6 +190,9 @@ private:
       case lexer::NIL: {
         advance(); // advance past null
         return std::make_unique<nil_literal>("nil"); // add 
+      }
+      
+      case lexer::LEND: {
       }
 
       default: 

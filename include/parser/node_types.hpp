@@ -49,22 +49,22 @@ struct expression :public statement {
 struct var_dec :public statement {
   bool mut;
   std::string identifier;
-  expression* type;
+  std::unique_ptr<expression> type;
 
 
-  var_dec(): statement(node_type::VAR_DEC){} // NODE Type
+  var_dec(): statement(node_type::VAR_DEC), mut(true), type(nullptr){} // NODE Type
 
   // idk how to make this formatted in a less ugly way sorry lmao
   var_dec
   (
     bool _mut,
     std::string id,
-    expression* typ
+    std::unique_ptr<expression> typ
   ):
     statement(node_type::VAR_DEC), // NODE Type
     mut(_mut),                     // mutable 
     identifier(id),                // Identifier name
-    type(typ){}                    // expr type
+    type(std::move(typ)){}                    // expr type
 };
 
 struct binary_exp :public expression {

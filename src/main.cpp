@@ -97,6 +97,7 @@ symtable::environment* create_global_env() {
 }
 
 int main(int argc, char** argv) {
+  system("clear");
   auto env = create_global_env();
   
   if(argc == 1) {
