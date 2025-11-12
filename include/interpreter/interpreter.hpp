@@ -98,7 +98,7 @@ inline rtpoint eval_identifier(parser::identifier* ident, symtable::environment*
     throw std::runtime_error("Undefined variable: " + ident->symbol);
   }
   // Return a copy of the value
-  return std::make_unique<runtime_val>(*val);
+  return val->clone();
 }
 
 // Evaluate variable declarations
