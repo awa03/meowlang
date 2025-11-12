@@ -108,8 +108,8 @@ inline rtpoint eval_var_decl(parser::var_dec* new_var, symtable::environment* en
     : make_nil();
 
   auto* result = env->declare_variable(new_var->identifier, std::move(value));
-  // Return a new unique_ptr wrapping the stored value
-  return std::make_unique<runtime_val>(*result);
+
+  return result->clone();
 }
 
 
@@ -128,7 +128,7 @@ inline rtpoint eval(parser::statement* ast_node, symtable::environment* env) {
           double val = std::stod(num_literal->symbol);
           return make_number(val);
         } catch (const std::invalid_argument& e) {
-          std::cerr << "ERROR: Invalid number format: '" << num_literal->symbol << "'\n";
+          throw std::runtime_error("ERROR: Invalid number format: '" + num_literal->symbol + "'\n");
           return make_nil();
         }
       }
@@ -152,7 +152,7 @@ inline rtpoint eval(parser::statement* ast_node, symtable::environment* env) {
         throw std::runtime_error("AST Node kind not implemented for interpretation");
     }
   } catch (const std::exception& e) {
-    std::cerr << "INTERPRETER ERROR: " << e.what() << "\n";
+    throw ("INTERPRETER ERROR: " + std::string(e.what()) + "\n");
     return make_nil();
   }
 }

@@ -2,6 +2,7 @@
 #define PARSER_HPP
 
 #include <memory>
+#include <string>
 #include "lexer/token.hpp"
 #include "parser/node_types.hpp"
 #include "utils/dump.hpp"
@@ -62,8 +63,8 @@ std::unique_ptr<statement> parse_var_dec(){
     advance(); // eat semicolon
     
     if(!is_mut){
-      std::cerr << "Must assign value to constant expression ["; 
-      std::cerr << curr_tok().line << "]\n"; 
+      throw std::runtime_error("Must assign value to constant expression [" 
+      + std::to_string(curr_tok().line) +"]\n"); 
       exit(1);
     }
 
@@ -146,9 +147,9 @@ std::unique_ptr<statement> parse_var_dec(){
     const auto prev = curr_tok();
 
     if(prev.type != type){
-      std::cerr << "PARSER: " << err << "\n";
-      std::cerr << "\tExpecting: " << lexer::token_type_to_string(type) << "\n";
-      std::cerr << "\tRecieved: " << lexer::token_type_to_string(prev.type) << "\n";
+      throw std::runtime_error("PARSER: " + err + "\n" +
+      "\tExpecting: "+ lexer::token_type_to_string(type) + "\n" + 
+      "\tRecieved: " + lexer::token_type_to_string(prev.type) + "\n");
       exit(1);
     }
 
@@ -181,7 +182,7 @@ std::unique_ptr<statement> parse_var_dec(){
 
       // unexpected -- should never reach
       case lexer::RPAREN: {
-        std::cerr << "\nPARSER: Unexpected closing parenthesis ')' on line " << tok.line << "\n";
+        throw std::runtime_error("\nPARSER: Unexpected closing parenthesis ')' on line " + std::to_string(tok.line) + "\n");
         exit(1);
       }
 
@@ -195,7 +196,7 @@ std::unique_ptr<statement> parse_var_dec(){
       }
 
       default: 
-        std::cerr << "\nPARSER: Unexpected token [" << tok.value << "] on line " << tok.line << "\n";
+        throw std::runtime_error("\nPARSER: Unexpected token [" + tok.value + "] on line " + std::to_string(tok.line) + "\n");
         exit(1);
     } 
   }
