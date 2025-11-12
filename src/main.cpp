@@ -34,7 +34,7 @@ void print_value(interpreter::runtime_val* val) {
 
 void execute_and_print(parser::program& program, symtable::environment* env) {
   auto ret = interpreter::eval_program(&program, env);
-  print_value(ret);
+  print_value(ret.get());
   std::cout << std::endl;
 }
 
