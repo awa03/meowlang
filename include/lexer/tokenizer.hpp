@@ -27,7 +27,7 @@ namespace lexer {
     // check file
     std::ifstream file(file_name); 
     if(!file.is_open()){
-      std::cerr << "Could not open <" << file_name << ">\n";
+      throw std::runtime_error("Could not open <" + file_name + ">\n");
       exit(1);
     }
 
@@ -91,7 +91,7 @@ namespace lexer {
       } else if(isalpha(c)) {
         scan_identifier(tok_obj);
       } else {
-        std::cerr << "Unexpected character on line " << tok_obj.line << ": " << c << "\n";
+        throw std::runtime_error("Unexpected character on line " + std::to_string(tok_obj.line) + ": " + std::string(1, c) + "\n");
       }
   }  
   }
@@ -166,13 +166,13 @@ namespace lexer {
 
 inline void scan_string(tokenizer& tok_obj){
   int& start = tok_obj.start;
-  while(!tok_obj.is_end() && tok_obj.peak() != '"'){
+  while(tok_obj.peak() != '"'){
     if(tok_obj.peak() == '\n') tok_obj.line++; // may needrefactor
     advance(tok_obj);
   }
 
   if(tok_obj.is_end()){
-    std::cerr << "Unterminated string on line " << tok_obj.line << "\n";
+    throw std::runtime_error("Unterminated string on line " + std::to_string(tok_obj.line) + "\n");
     return;
   }
 

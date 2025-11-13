@@ -17,6 +17,7 @@ enum node_type {
   NULL_LITERAL,     // Nil 
   IDENTIFIER,       // variable
   BINARY_EXP,       // 5 + 5
+  ASSIGNMENT,
 
   // TODO
   UNARY_EXP,

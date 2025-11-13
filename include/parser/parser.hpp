@@ -2,6 +2,7 @@
 #define PARSER_HPP
 
 #include <memory>
+#include <string>
 #include "lexer/token.hpp"
 #include "parser/node_types.hpp"
 #include "utils/dump.hpp"
@@ -47,41 +48,40 @@ private:
     return tokens[0].type == lexer::END_OF_FILE;
   }
 
-  std::unique_ptr<statement> parse_var_dec(){
-    bool is_mut = advance_type() == lexer::token_type::MUT; // check mut first
+std::unique_ptr<statement> parse_var_dec(){
+  bool is_mut = advance_type() == lexer::token_type::MUT; // check mut first
 
-    // ensure that assigning if mut
-    if(is_mut && curr_tok().type == lexer::token_type::VAR){
-      advance(); // east new 
-    }
-
-        
-    // continue ctrl flw
-    const auto iden = expect(lexer::token_type::IDENTIFIER, "Expected Identifier Following `new`");
-    if(curr_tok().type == lexer::LEND){
-      advance(); // eat semicolon
-      
-      if(!is_mut){
-        std::cerr << "Must assign value to constant expression ["; 
-        std::cerr << curr_tok().line << "]\n"; 
-        exit(1);
-      }
-
-      return std::make_unique<var_dec>(is_mut, iden.value, nullptr);
-    } 
-
-    expect(lexer::token_type::ASSIGN, "Expected assignment following identifier in variable decleration");
-    auto decl = std::make_unique<var_dec>(
-      is_mut,
-      iden.value,
-      parse_exp()
-    );
-    
-
-    expect(lexer::token_type::LEND, "Expected `;` following variable decleration");
-    return decl;
+  // ensure that assigning if mut
+  if(is_mut && curr_tok().type == lexer::token_type::VAR){
+    advance(); // eat VAR 
   }
 
+  const auto iden = expect(lexer::token_type::IDENTIFIER, "Expected Identifier Following `mut`/`var`");
+  
+  // check if semicolon (uninitialized declaration)
+  if(curr_tok().type == lexer::token_type::LEND){
+    advance(); // eat semicolon
+    
+    if(!is_mut){
+      throw std::runtime_error("Must assign value to constant expression [" 
+      + std::to_string(curr_tok().line) +"]\n"); 
+      exit(1);
+    }
+
+    return std::make_unique<var_dec>(is_mut, iden.value, nullptr);
+  } 
+
+  // Otherwise expect assignment
+  expect(lexer::token_type::ASSIGN, "Expected assignment following identifier in variable decleration");
+  auto decl = std::make_unique<var_dec>(
+    is_mut,
+    iden.value,
+    parse_exp()
+  );
+  
+  expect(lexer::token_type::LEND, "Expected `;` following variable decleration");
+  return decl;
+}
   std::unique_ptr<statement> parse_stmt(){
     switch(curr_tok().type) {
     case lexer::VAR:
@@ -147,9 +147,9 @@ private:
     const auto prev = curr_tok();
 
     if(prev.type != type){
-      std::cerr << "PARSER: " << err << "\n";
-      std::cerr << "\tExpecting: " << lexer::token_type_to_string(type) << "\n";
-      std::cerr << "\tRecieved: " << lexer::token_type_to_string(prev.type) << "\n";
+      throw std::runtime_error("PARSER: " + err + "\n" +
+      "\tExpecting: "+ lexer::token_type_to_string(type) + "\n" + 
+      "\tRecieved: " + lexer::token_type_to_string(prev.type) + "\n");
       exit(1);
     }
 
@@ -182,7 +182,7 @@ private:
 
       // unexpected -- should never reach
       case lexer::RPAREN: {
-        std::cerr << "\nPARSER: Unexpected closing parenthesis ')' on line " << tok.line << "\n";
+        throw std::runtime_error("\nPARSER: Unexpected closing parenthesis ')' on line " + std::to_string(tok.line) + "\n");
         exit(1);
       }
 
@@ -196,7 +196,7 @@ private:
       }
 
       default: 
-        std::cerr << "\nPARSER: Unexpected token [" << tok.value << "] on line " << tok.line << "\n";
+        throw std::runtime_error("\nPARSER: Unexpected token [" + tok.value + "] on line " + std::to_string(tok.line) + "\n");
         exit(1);
     } 
   }

@@ -8,8 +8,10 @@
 namespace interpreter {
 
 template<typename T>
-T* as_ptr(const std::unique_ptr<runtime_val>& val) {
-    return static_cast<T*>(val.get());
+std::unique_ptr<T> rt_as_type_ptr(std::unique_ptr<runtime_val> val) {
+  return std::unique_ptr<T>(
+    static_cast<T*>(val.release())
+  );
 }
 
 template<typename T>
@@ -21,6 +23,16 @@ template<typename T>
 T* as_ast(parser::statement* node) {
   return static_cast<T*>(node);
 }
+
+template<typename Derived, typename Base>
+std::unique_ptr<Derived> get_derived_type(std::unique_ptr<Base>&& base){
+  if(auto d = dynamic_cast<Derived*>(base.get())){
+    base.release();
+    return std::unique_ptr<Derived>(d);
+  }
+  return nullptr;
+}
+
 
 }
 #endif
